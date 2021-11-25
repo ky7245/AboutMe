@@ -12,9 +12,11 @@ import com.example.aboutme.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val myName: MyName = MyName("Jon Racy")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.myName = myName
 
         // add listener(s)
         binding.doneButton.setOnClickListener {
@@ -29,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.apply {
             // set NickName
-            nicknameText.text = nicknameEdit.text.toString()
+            myName?.nickname = nicknameEdit.text.toString()
+            invalidateAll()
 
             // hide button and textView
             nicknameEdit.visibility = View.GONE
@@ -40,11 +43,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Hide the keyboard.
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun updateNickname (view: View) {
+    private fun updateNickname(view: View) {
         val editText = findViewById<EditText>(R.id.nickname_edit)
         val doneButton = findViewById<Button>(R.id.done_button)
 
